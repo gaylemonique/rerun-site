@@ -10,7 +10,7 @@
   // scroll reveal, staggered within each group
   const groups = [
     ["section:not(.hero) > h2, section:not(.hero) > .label", false],
-    [".shots li", true],
+    [".carousel", false],
     [".cards li", true],
     [".steps li", true],
     [".note", false],
@@ -61,4 +61,117 @@
       setTimeout(() => { a.innerHTML = original }, 2200)
     })
   })
+
+  // screenshot carousel
+  const track = document.querySelector(".shots")
+  if (track) {
+    const slides = [...track.children]
+    const dotsWrap = document.querySelector(".dots")
+    const playBtn = document.querySelector(".nav-btn.play")
+    const INTERVAL = 4000
+    let index = 0
+    let timer = null
+    let userPaused = false
+    let hovering = false
+    let inView = true
+    let settle = null
+
+    track.style.setProperty("--interval", INTERVAL + "ms")
+
+    const dots = slides.map((_, i) => {
+      const d = document.createElement("button")
+      d.type = "button"
+      d.className = "dot"
+      d.setAttribute("role", "tab")
+      d.setAttribute("aria-label", "Screenshot " + (i + 1) + " of " + slides.length)
+      d.addEventListener("click", () => { goTo(i); restart() })
+      dotsWrap.appendChild(d)
+      return d
+    })
+
+    const running = () => !reduce && !userPaused && !hovering && inView && !document.hidden
+
+    const paint = () => {
+      slides.forEach((s, i) => s.classList.toggle("is-active", i === index))
+      dots.forEach((d, i) => {
+        d.setAttribute("aria-selected", String(i === index))
+        d.classList.remove("playing")
+      })
+      // restart the progress animation on the active dot
+      void dotsWrap.offsetWidth
+      if (running()) dots[index].classList.add("playing")
+    }
+
+    const goTo = (i, behavior) => {
+      index = (i + slides.length) % slides.length
+      const s = slides[index]
+      const left = s.offsetLeft - (track.clientWidth - s.clientWidth) / 2
+      track.scrollTo({ left, behavior: behavior || (reduce ? "auto" : "smooth") })
+      paint()
+    }
+
+    const stop = () => { clearInterval(timer); timer = null; dots[index].classList.remove("playing") }
+    const start = () => {
+      stop()
+      if (!running()) return
+      dots[index].classList.add("playing")
+      timer = setInterval(() => goTo(index + 1), INTERVAL)
+    }
+    const restart = () => { stop(); paint(); start() }
+
+    // keep the active slide in sync with manual swipes and scrolling
+    track.addEventListener("scroll", () => {
+      clearTimeout(settle)
+      settle = setTimeout(() => {
+        const center = track.scrollLeft + track.clientWidth / 2
+        let best = 0
+        let bestDist = Infinity
+        slides.forEach((s, i) => {
+          const dist = Math.abs(s.offsetLeft + s.clientWidth / 2 - center)
+          if (dist < bestDist) { bestDist = dist; best = i }
+        })
+        if (best !== index) { index = best; restart() }
+      }, 80)
+    }, { passive: true })
+
+    document.querySelectorAll(".nav-btn[data-dir]").forEach((b) => {
+      b.addEventListener("click", () => { goTo(index + Number(b.dataset.dir)); restart() })
+    })
+
+    track.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") { e.preventDefault(); goTo(index + 1); restart() }
+      if (e.key === "ArrowLeft") { e.preventDefault(); goTo(index - 1); restart() }
+    })
+
+    if (playBtn) {
+      if (reduce) { userPaused = true; playBtn.hidden = true }
+      playBtn.addEventListener("click", () => {
+        userPaused = !userPaused
+        playBtn.setAttribute("aria-pressed", String(userPaused))
+        playBtn.setAttribute("aria-label", userPaused ? "Start autoplay" : "Pause autoplay")
+        playBtn.firstElementChild.textContent = userPaused ? "▶" : "❚❚"
+        restart()
+      })
+    }
+
+    const box = track.closest(".carousel")
+    box.addEventListener("mouseenter", () => { hovering = true; restart() })
+    box.addEventListener("mouseleave", () => { hovering = false; restart() })
+    box.addEventListener("focusin", () => { hovering = true; restart() })
+    box.addEventListener("focusout", () => { hovering = false; restart() })
+    box.addEventListener("touchstart", () => { hovering = true; stop() }, { passive: true })
+    box.addEventListener("touchend", () => { setTimeout(() => { hovering = false; restart() }, 2500) }, { passive: true })
+    document.addEventListener("visibilitychange", restart)
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver((entries) => {
+        inView = entries[0].isIntersecting
+        restart()
+      }, { threshold: 0.3 }).observe(box)
+    }
+
+    window.addEventListener("resize", () => goTo(index, "auto"))
+    goTo(0, "auto")
+    start()
+  }
 })()
