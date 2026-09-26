@@ -125,6 +125,11 @@
     ;["wheel", "touchstart", "keydown"].forEach((type) =>
       window.addEventListener(type, () => { touched = true }, { once: true, passive: true })
     )
+    // a saved address ending in #about should not skip the top; only links from this site keep their hash
+    let fromThisSite = false
+    try { fromThisSite = !!document.referrer && new URL(document.referrer).origin === location.origin } catch (e) {}
+    if (location.hash && !fromThisSite) history.replaceState(null, "", location.pathname + location.search)
+
     const openAt = () => {
       const target = location.hash ? document.querySelector(location.hash) : null
       const i = target ? pages.indexOf(target) : -1
