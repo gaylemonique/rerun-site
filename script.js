@@ -10,7 +10,7 @@
 
   // scroll reveal, staggered within each group
   const groups = [
-    ["section:not(.hero) > h2, section:not(.hero) > .label", false],
+    ["section:not(.hero) > h2, section:not(.hero) > .label, .screens-head", false],
     [".carousel", false],
     [".cards li", true],
     [".steps li", true],
@@ -163,12 +163,30 @@
     })
   })
 
+  // dark / light screenshots: a slide switches when its img has a data-light source
+  const modeButtons = [...document.querySelectorAll(".mode button")]
+  const shotImgs = [...document.querySelectorAll(".shots img")]
+  if (modeButtons.length && shotImgs.length) {
+    shotImgs.forEach((img) => { img.dataset.dark = img.getAttribute("src") })
+    const hasLight = shotImgs.every((img) => img.dataset.light)
+    const light = modeButtons.find((b) => b.dataset.mode === "light")
+    if (!hasLight && light) {
+      light.disabled = true
+      light.title = "Light mode screenshots are coming soon"
+    }
+    modeButtons.forEach((b) => b.addEventListener("click", () => {
+      const mode = b.dataset.mode
+      modeButtons.forEach((x) => x.setAttribute("aria-pressed", String(x === b)))
+      shotImgs.forEach((img) => { img.src = img.dataset[mode] || img.dataset.dark })
+    }))
+  }
+
   // screenshot carousel
   const track = document.querySelector(".shots")
   if (track) {
     const slides = [...track.children]
     const dotsWrap = document.querySelector(".dots")
-        const INTERVAL = 2800
+    const INTERVAL = 2800
     let index = 0
     let timer = null
     let userPaused = false
