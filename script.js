@@ -163,12 +163,12 @@
     })
   })
 
-  // dark / light screenshots: a slide switches when its img has a data-light source
+  // dark / light screenshots: slides without a data-light source stay dark
   const modeButtons = [...document.querySelectorAll(".mode button")]
   const shotImgs = [...document.querySelectorAll(".shots img")]
   if (modeButtons.length && shotImgs.length) {
     shotImgs.forEach((img) => { img.dataset.dark = img.getAttribute("src") })
-    const hasLight = shotImgs.every((img) => img.dataset.light)
+    const hasLight = shotImgs.some((img) => img.dataset.light)
     const light = modeButtons.find((b) => b.dataset.mode === "light")
     if (!hasLight && light) {
       light.disabled = true
