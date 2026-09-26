@@ -410,3 +410,39 @@ nav a.active { color: var(--ink); }
   .dot { transition: none; }
   .dot.playing::after { animation: none; }
 }
+
+/* ---------- Stacked pages ---------- */
+html.stack main > section {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 96px;
+  padding-bottom: 72px;
+  background: var(--bg);
+}
+html.stack main > section.band { background: var(--panel); }
+html.stack main > section.about { display: grid; align-content: center; background: #ece4de; }
+html.stack main > section + section {
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -24px 48px -20px rgba(26, 21, 23, 0.35);
+}
+html.stack main > section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--chrome);
+  opacity: calc(var(--cover, 0) * 0.5);
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 5;
+}
+html.stack main > section > * { position: relative; z-index: 1; }
+html.stack .profile { position: relative; }
+@media (min-width: 768px) {
+  html.stack main > section { padding-top: 104px; padding-bottom: 80px; }
+  html.stack .profile { position: sticky; }
+}

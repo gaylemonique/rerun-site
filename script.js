@@ -1,5 +1,6 @@
 (() => {
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  const stackOn = !reduce
 
   // header rule once the page scrolls
   const masthead = document.getElementById("masthead")
@@ -42,7 +43,7 @@
   // highlight the nav link for the section in view
   const links = [...document.querySelectorAll("nav a[href^='#']")]
   const sections = links.map((a) => document.querySelector(a.getAttribute("href"))).filter(Boolean)
-  if ("IntersectionObserver" in window && sections.length) {
+  if (!stackOn && "IntersectionObserver" in window && sections.length) {
     const spy = new IntersectionObserver(
       (entries) => entries.forEach((entry) => {
         if (!entry.isIntersecting) return
@@ -51,6 +52,80 @@
       { rootMargin: "-45% 0px -50% 0px" }
     )
     sections.forEach((s) => spy.observe(s))
+  }
+
+  // stacked pages: each section sticks and the next one slides over it
+  if (stackOn) {
+    const main = document.getElementById("top")
+    const pages = [...main.children].filter((el) => el.tagName === "SECTION")
+    document.documentElement.classList.add("stack")
+    pages.forEach((p, i) => { p.style.zIndex = String(i + 1) })
+
+    const naturalTops = () => {
+      let y = main.offsetTop
+      return pages.map((p) => { const top = y; y += p.offsetHeight; return top })
+    }
+
+    // a page taller than the screen sticks once its bottom is reached
+    const measure = () => {
+      const vh = window.innerHeight
+      pages.forEach((p) => { p.style.top = Math.min(0, vh - p.offsetHeight) + "px" })
+    }
+
+    let ticking = false
+    const update = () => {
+      ticking = false
+      const vh = window.innerHeight
+      pages.forEach((p, i) => {
+        const next = pages[i + 1]
+        const cover = next ? Math.min(1, Math.max(0, (vh - next.getBoundingClientRect().top) / vh)) : 0
+        p.style.setProperty("--cover", cover.toFixed(3))
+      })
+      const tops = naturalTops()
+      const probe = window.scrollY + vh * 0.4
+      let current = 0
+      tops.forEach((t, i) => { if (probe >= t) current = i })
+      links.forEach((a) => {
+        const target = document.querySelector(a.getAttribute("href"))
+        a.classList.toggle("active", target === pages[current])
+      })
+    }
+    const request = () => { if (!ticking) { ticking = true; requestAnimationFrame(update) } }
+
+    const goTo = (target) => {
+      if (target === main) { window.scrollTo({ top: 0, behavior: "smooth" }); return }
+      const i = pages.indexOf(target)
+      if (i < 0) return
+      window.scrollTo({ top: naturalTops()[i], behavior: "smooth" })
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+      a.addEventListener("click", (e) => {
+        const target = document.querySelector(a.getAttribute("href"))
+        if (!target) return
+        e.preventDefault()
+        goTo(target)
+        history.replaceState(null, "", a.getAttribute("href"))
+      })
+    })
+
+    const remeasure = () => { measure(); request() }
+    window.addEventListener("scroll", request, { passive: true })
+    window.addEventListener("resize", remeasure)
+    window.addEventListener("load", remeasure)
+    if ("ResizeObserver" in window) {
+      const ro = new ResizeObserver(remeasure)
+      pages.forEach((p) => ro.observe(p))
+    }
+    measure()
+    update()
+
+    if (location.hash) {
+      const target = document.querySelector(location.hash)
+      if (target && pages.includes(target)) {
+        window.scrollTo({ top: naturalTops()[pages.indexOf(target)], behavior: "auto" })
+      }
+    }
   }
 
   // brief feedback on the download button
