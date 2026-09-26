@@ -329,10 +329,8 @@ nav a.active { color: var(--ink); }
 .tiles.mini i { height: 7px; border-radius: 2px; background: #5a4e53; }
 .tiles.mini i.d { --to: #5a4e53; }
 .profile h2 { margin-bottom: 4px; }
-.role { margin: 0 0 16px; color: var(--muted); font-size: 0.875rem; }
-.follow { display: flex; justify-content: center; width: 100%; }
-.btn.primary.follow:hover .arrow { transform: translateX(4px); }
-.handle { margin: 10px 0 20px; font-size: 0.875rem; color: var(--muted); text-align: center; }
+.role { margin: 0 0 20px; color: var(--muted); font-size: 0.875rem; }
+.handle { margin: 14px 0 0; font-size: 0.875rem; color: var(--muted); }
 .handle b { font: 400 0.8125rem/1 "Space Mono", ui-monospace, monospace; color: var(--ink); }
 .links { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
 .pill {
