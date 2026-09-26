@@ -76,23 +76,34 @@
     </section>
 
     <section id="about" class="band about">
-      <div>
+      <aside class="profile">
+        <div class="avatar" aria-hidden="true">
+          <div class="tiles mini"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="r"></i><i class="d"></i><i class="d"></i></div>
+        </div>
         <p class="label">About</p>
         <h2>Hi, I'm Gayle Monique.</h2>
-      </div>
-      <div class="prose">
-        <p>I'm a developer who built Rerun end to end: the design, the web app, the database, and the Android build you can download above.</p>
-        <p>I like small, calm tools that do one job well, and I care about details like contrast, tap targets and motion that respects your settings.</p>
-        <h3>Built with</h3>
-        <ul class="chips">
-          <li>Next.js</li><li>React</li><li>TypeScript</li><li>Tailwind CSS</li><li>Supabase</li><li>Capacitor</li>
-        </ul>
-        <h3>Find me</h3>
+        <p class="role">Developer of Rerun</p>
         <p class="links">
-          <a href="https://portfolio-gayle.vercel.app">Portfolio</a>
-          <a href="https://github.com/gaylemonique" rel="noopener">GitHub</a>
-          <a href="mailto:gaylemonique21@gmail.com">Email</a>
+          <a class="pill" href="https://portfolio-gayle.vercel.app" rel="noopener">Portfolio <span class="arrow" aria-hidden="true">↗</span></a>
+          <a class="pill" href="https://github.com/gaylemonique" rel="noopener">GitHub <span class="arrow" aria-hidden="true">↗</span></a>
+          <a class="pill" href="mailto:gaylemonique21@gmail.com">Email <span class="arrow" aria-hidden="true">→</span></a>
         </p>
+      </aside>
+      <div class="prose">
+        <p class="lead">I built Rerun end to end: the design, the web app, the database, and the Android build you can download above.</p>
+        <p>I like small, calm tools that do one job well, and I care about details like contrast, tap targets and motion that respects your settings.</p>
+        <h3>What I care about</h3>
+        <ul class="values">
+          <li><span class="label">01</span><b>Quiet interfaces</b><p>Content leads and the chrome stays out of the way.</p></li>
+          <li><span class="label">02</span><b>Accessible by default</b><p>Readable contrast, comfortable tap targets, reduced motion.</p></li>
+          <li><span class="label">03</span><b>Shipped, not just designed</b><p>From first sketch to an APK on a real phone.</p></li>
+        </ul>
+        <h3>Built with</h3>
+        <dl class="stack">
+          <div><dt class="label">Frontend</dt><dd><ul class="chips"><li>Next.js</li><li>React</li><li>TypeScript</li><li>Tailwind CSS</li></ul></dd></div>
+          <div><dt class="label">Backend</dt><dd><ul class="chips"><li>Supabase</li></ul></dd></div>
+          <div><dt class="label">Mobile</dt><dd><ul class="chips"><li>Capacitor</li><li>Android</li></ul></dd></div>
+        </dl>
       </div>
     </section>
   </main>

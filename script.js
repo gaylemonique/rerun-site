@@ -14,7 +14,7 @@
     [".cards li", true],
     [".steps li", true],
     [".note", false],
-    [".about > div", true],
+    [".about > aside, .about > div", true],
   ]
   const targets = []
   groups.forEach(([selector, stagger]) => {
