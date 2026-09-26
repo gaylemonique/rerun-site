@@ -67,8 +67,7 @@
   if (track) {
     const slides = [...track.children]
     const dotsWrap = document.querySelector(".dots")
-    const playBtn = document.querySelector(".nav-btn.play")
-    const INTERVAL = 4000
+        const INTERVAL = 4000
     let index = 0
     let timer = null
     let userPaused = false
@@ -78,13 +77,9 @@
 
     track.style.setProperty("--interval", INTERVAL + "ms")
 
-    const dots = slides.map((_, i) => {
-      const d = document.createElement("button")
-      d.type = "button"
+    const dots = slides.map(() => {
+      const d = document.createElement("span")
       d.className = "dot"
-      d.setAttribute("role", "tab")
-      d.setAttribute("aria-label", "Screenshot " + (i + 1) + " of " + slides.length)
-      d.addEventListener("click", () => { goTo(i); restart() })
       dotsWrap.appendChild(d)
       return d
     })
@@ -94,7 +89,7 @@
     const paint = () => {
       slides.forEach((s, i) => s.classList.toggle("is-active", i === index))
       dots.forEach((d, i) => {
-        d.setAttribute("aria-selected", String(i === index))
+        d.classList.toggle("on", i === index)
         d.classList.remove("playing")
       })
       // restart the progress animation on the active dot
@@ -134,25 +129,12 @@
       }, 80)
     }, { passive: true })
 
-    document.querySelectorAll(".nav-btn[data-dir]").forEach((b) => {
-      b.addEventListener("click", () => { goTo(index + Number(b.dataset.dir)); restart() })
-    })
-
     track.addEventListener("keydown", (e) => {
       if (e.key === "ArrowRight") { e.preventDefault(); goTo(index + 1); restart() }
       if (e.key === "ArrowLeft") { e.preventDefault(); goTo(index - 1); restart() }
     })
 
-    if (playBtn) {
-      if (reduce) { userPaused = true; playBtn.hidden = true }
-      playBtn.addEventListener("click", () => {
-        userPaused = !userPaused
-        playBtn.setAttribute("aria-pressed", String(userPaused))
-        playBtn.setAttribute("aria-label", userPaused ? "Start autoplay" : "Pause autoplay")
-        playBtn.firstElementChild.textContent = userPaused ? "▶" : "❚❚"
-        restart()
-      })
-    }
+    if (reduce) userPaused = true
 
     const box = track.closest(".carousel")
     box.addEventListener("mouseenter", () => { hovering = true; restart() })
@@ -167,7 +149,7 @@
       new IntersectionObserver((entries) => {
         inView = entries[0].isIntersecting
         restart()
-      }, { threshold: 0.3 }).observe(box)
+      }, { threshold: 0.1 }).observe(box)
     }
 
     window.addEventListener("resize", () => goTo(index, "auto"))
