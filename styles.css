@@ -124,7 +124,7 @@ section { padding-top: 56px; padding-bottom: 56px; }
 .mode button:disabled { cursor: default; opacity: 0.5; }
 .mode button:focus-visible { outline: 2px solid var(--olive-deep); outline-offset: 2px; }
 .shots {
-  --slide: min(64vw, 240px, calc((100svh - 250px) / 2.02));
+  --slide: min(64vw, 240px, calc((100svh - 300px) / 2.02));
   position: relative;
   list-style: none;
   margin: 0;
@@ -325,6 +325,15 @@ nav a.active { color: var(--ink); }
 .shots li.is-active img { box-shadow: 0 28px 44px -22px rgba(26, 21, 23, 0.65); }
 .shots li.is-active figcaption { color: var(--ink); }
 .shots figcaption { text-align: center; transition: color 0.3s ease; }
+.shots .desc {
+  display: block;
+  margin-top: 6px;
+  font: 400 0.8125rem/1.45 Inter, system-ui, sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--muted);
+  text-wrap: balance;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .tiles i { animation: none; background: var(--to); }
