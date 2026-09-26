@@ -54,6 +54,21 @@
     sections.forEach((s) => spy.observe(s))
   }
 
+  // iPhone and iPad visitors can't install an APK, so point them at the iPhone steps
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  if (isIOS) {
+    const ios = document.getElementById("ios")
+    if (ios) ios.open = true
+    const apk = document.querySelector(".hero a.btn.primary[download]")
+    if (apk) {
+      apk.removeAttribute("download")
+      apk.setAttribute("href", "#install")
+      apk.innerHTML = 'Use on iPhone <span class="arrow" aria-hidden="true">↓</span>'
+    }
+    const meta = document.querySelector(".hero .meta")
+    if (meta) meta.textContent = "The Android app can't be installed on iPhone. Open the web app instead."
+  }
+
   // stacked pages: each section sticks and the next one slides over it
   if (stackOn) {
     const main = document.getElementById("top")
