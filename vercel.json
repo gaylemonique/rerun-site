@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/downloads/Rerun.apk",
+      "destination": "https://github.com/gaylemonique/rerun-site/releases/latest/download/Rerun.apk",
+      "permanent": false
+    }
+  ]
+}
