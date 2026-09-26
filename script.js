@@ -67,7 +67,7 @@
   if (track) {
     const slides = [...track.children]
     const dotsWrap = document.querySelector(".dots")
-        const INTERVAL = 4000
+        const INTERVAL = 2800
     let index = 0
     let timer = null
     let userPaused = false

@@ -122,7 +122,7 @@ section { padding-top: 56px; padding-bottom: 56px; }
   scroll-snap-align: center;
   opacity: 0.45;
   transform: scale(0.86);
-  transition: transform 0.5s var(--ease), opacity 0.5s var(--ease);
+  transition: transform 0.4s var(--ease), opacity 0.4s var(--ease);
 }
 .shots li.is-active { opacity: 1; transform: scale(1); }
 .shots figure { margin: 0; }
@@ -182,6 +182,7 @@ footer {
 footer p { margin: 0; }
 
 @media (min-width: 768px) {
+  .shots { --slide: clamp(260px, min(26vw, 36vh), 330px); gap: 28px; }
   .top, section, footer { padding-left: max(32px, calc((100% - 1040px) / 2)); padding-right: max(32px, calc((100% - 1040px) / 2)); }
   .cards { grid-template-columns: repeat(3, 1fr); }
   .about { grid-template-columns: 1fr 2fr; gap: 48px; }
