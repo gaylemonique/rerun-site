@@ -105,7 +105,6 @@
         if (!target) return
         e.preventDefault()
         goTo(target)
-        history.replaceState(null, "", a.getAttribute("href"))
       })
     })
 
@@ -120,12 +119,19 @@
     measure()
     update()
 
-    if (location.hash) {
-      const target = document.querySelector(location.hash)
-      if (target && pages.includes(target)) {
-        window.scrollTo({ top: naturalTops()[pages.indexOf(target)], behavior: "auto" })
-      }
+    // open on the first page unless the link points at a section
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual"
+    let touched = false
+    ;["wheel", "touchstart", "keydown"].forEach((type) =>
+      window.addEventListener(type, () => { touched = true }, { once: true, passive: true })
+    )
+    const openAt = () => {
+      const target = location.hash ? document.querySelector(location.hash) : null
+      const i = target ? pages.indexOf(target) : -1
+      window.scrollTo({ top: i > 0 ? naturalTops()[i] : 0, behavior: "instant" })
     }
+    openAt()
+    window.addEventListener("load", () => { if (!touched) openAt() }, { once: true })
   }
 
   // brief feedback on the download button
