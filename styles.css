@@ -347,9 +347,6 @@ nav a.active { color: var(--ink); }
 .handle { margin: 8px 0 14px; font-size: 0.875rem; color: var(--muted); text-align: center; }
 .handle b { font: 400 0.8125rem/1 "Space Mono", ui-monospace, monospace; color: var(--ink); }
 .links { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
-.support { margin: 16px 0 0; }
-.support a { display: inline-block; border-radius: 8px; }
-.support img { display: block; height: 48px; width: auto; max-width: 100%; }
 .pill {
   display: inline-flex;
   align-items: center;
