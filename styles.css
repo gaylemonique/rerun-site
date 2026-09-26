@@ -550,3 +550,8 @@ footer .fine { display: block; margin-top: 4px; font-size: 0.8125rem; }
 @media (min-width: 768px) {
   footer { flex-direction: row; justify-content: space-between; padding-top: 32px; padding-bottom: 40px; }
 }
+
+/* short phones: tighter install steps so the page fits one screen */
+@media (max-width: 767px) and (max-height: 720px) {
+  .steps li { padding: 10px 0; }
+}
