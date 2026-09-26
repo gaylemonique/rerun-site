@@ -58,7 +58,7 @@
   if (stackOn) {
     const main = document.getElementById("top")
     const pages = [...main.children].filter((el) => el.tagName === "SECTION")
-    document.documentElement.classList.add("stack")
+    document.documentElement.classList.add("stacked")
     pages.forEach((p, i) => { p.style.zIndex = String(i + 1) })
 
     const naturalTops = () => {
