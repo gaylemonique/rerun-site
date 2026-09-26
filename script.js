@@ -66,7 +66,7 @@
       apk.innerHTML = 'Use on iPhone <span class="arrow" aria-hidden="true">↓</span>'
     }
     const meta = document.querySelector(".hero .meta")
-    if (meta) meta.textContent = "The Android app can't be installed on iPhone. Open the web app instead."
+    if (meta) meta.textContent = "The APK can't be installed on iPhone. Open the web app instead."
   }
 
   // stacked pages: each section sticks and the next one slides over it
