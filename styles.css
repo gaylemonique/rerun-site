@@ -1,6 +1,6 @@
 :root {
   --bg: #f9f6f4;
-  --panel: #eacfd9;
+  --panel: #e6e8d8;
   --card: #f2cecd;
   --rose-deep: #a96e7b;
   --olive: #818455;
@@ -146,9 +146,13 @@ section { padding-top: 56px; padding-bottom: 56px; }
 .band { background: var(--panel); }
 .band.about { background: #ece4de; }
 
-.cards { list-style: none; padding: 0; margin-top: 16px; display: grid; gap: 10px; }
-.cards li { background: var(--bg); border-radius: 16px; padding: 16px; }
-.cards p { margin: 0; font-size: 0.875rem; color: var(--muted); }
+.cards { list-style: none; padding: 0; margin-top: 16px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.cards li { background: var(--bg); border-radius: 16px; padding: 14px; }
+.cards li { display: grid; grid-template-columns: 22px 1fr; column-gap: 8px; align-items: center; }
+.cards .ico { display: block; color: var(--rose-deep); }
+.cards h3 { margin: 0; font-size: 0.9375rem; }
+.cards p { grid-column: 1 / -1; margin-top: 6px; }
+.cards p { margin: 0; font-size: 0.8125rem; line-height: 1.45; color: var(--muted); }
 
 .steps { list-style: none; padding: 0; margin-top: 16px; display: grid; gap: 0; }
 .steps li { display: grid; grid-template-columns: 40px 1fr; align-items: baseline; border-top: 1px solid var(--rule); padding: 14px 0; }
@@ -523,4 +527,12 @@ html.stacked .profile { position: relative; }
 @media (min-width: 768px) {
   .ios { max-width: 640px; }
   .ios-body { font-size: 0.9375rem; }
+}
+
+@media (min-width: 768px) {
+  .cards p { font-size: 0.875rem; line-height: 1.55; }
+  .cards li { display: block; }
+  .cards .ico { margin-bottom: 12px; }
+  .cards h3 { font-size: 1rem; margin-bottom: 4px; }
+  .cards p { margin-top: 0; }
 }
