@@ -163,7 +163,7 @@
     })
   })
 
-  // dark / light screenshots: slides without a data-light source stay dark
+  // dark / light screenshots: each img carries a data-light source
   const modeButtons = [...document.querySelectorAll(".mode button")]
   const shotImgs = [...document.querySelectorAll(".shots img")]
   if (modeButtons.length && shotImgs.length) {
