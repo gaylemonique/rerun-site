@@ -180,6 +180,20 @@ section { padding-top: 56px; padding-bottom: 56px; }
 .steps li:last-child { border-bottom: 1px solid var(--rule); }
 .steps p { margin: 0; }
 .steps .label { margin: 0; }
+.app-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  vertical-align: -3px;
+  font: 400 1.0625rem/1 Anton, Impact, sans-serif;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.app-link img { border-radius: 5px; transition: transform 0.3s var(--ease); }
+.app-link span { text-decoration: underline; text-decoration-color: var(--rose-deep); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.app-link:hover img { transform: rotate(-6deg) scale(1.06); }
+.app-link:focus-visible { outline: 2px solid var(--olive-deep); outline-offset: 3px; border-radius: 4px; }
 .note { font-size: 0.875rem; color: var(--muted); margin-top: 14px; max-width: 60ch; }
 
 .about { display: grid; gap: 16px; align-items: start; }
