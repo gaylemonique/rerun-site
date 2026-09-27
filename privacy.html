@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="styles.css">
   <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments) }</script>
   <script defer src="/_vercel/insights/script.js"></script>
+  <script defer src="track.js"></script>
 </head>
 <body>
   <header class="top">
@@ -23,7 +24,7 @@
         <h3>Where data lives</h3>
         <p>Account and diary data is stored with Supabase. Show posters and metadata come from TMDB. Sign-in with Google is handled by Google and Supabase. So the app can work offline, it also keeps a copy of the shows and diary entries you've opened on your device, along with any changes you made offline that haven't been sent yet. Signing out sends those changes and then removes that copy.</p>
         <h3>Site visits</h3>
-        <p>This website uses Vercel Web Analytics to count visits. It records which pages are viewed, the referring site, and the country, browser and device type. It doesn't use cookies and doesn't identify you. APK downloads are hosted on GitHub, which counts how many times the file is downloaded.</p>
+        <p>This website uses Vercel Web Analytics to count visits. It records which pages are viewed, the referring site, and the country, browser and device type. It doesn't use cookies and doesn't identify you. The site also keeps its own count of page views and Download APK taps in Supabase, with the same details: the page, the referring site, the country, and the browser and device type. Your IP address isn't stored. Visits are only told apart within a single day, using a code that changes every day. If your browser sends Global Privacy Control, the site doesn't count you. APK downloads are hosted on GitHub, which counts how many times the file is downloaded.</p>
         <h3>What I don't do</h3>
         <p>I don't sell your data or run ads. The app doesn't request camera, microphone, location or contacts permissions.</p>
         <h3>Deleting your data</h3>

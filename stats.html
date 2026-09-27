@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Rerun site stats</title>
+  <meta name="theme-color" content="#3b2c30">
+  <link rel="icon" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500&family=Space+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="stats.css">
+</head>
+<body class="stats-page">
+  <header class="top">
+    <a class="brand" href="index.html"><img src="assets/icon.png" alt="" width="28" height="28"> Rerun</a>
+    <button class="text-btn" id="sign-out" type="button" hidden>Sign out</button>
+  </header>
+
+  <main>
+    <section id="login" hidden>
+      <p class="label">Owner only</p>
+      <h1>Site stats</h1>
+      <form id="login-form" class="login" novalidate>
+        <label>Username or email
+          <input name="id" autocomplete="username" required>
+        </label>
+        <label>Password
+          <input name="password" type="password" autocomplete="current-password" required>
+        </label>
+        <p class="form-error" id="login-error" role="alert"></p>
+        <button class="btn primary" type="submit">Sign in</button>
+      </form>
+    </section>
+
+    <section id="dash" hidden>
+      <div class="dash-head">
+        <div>
+          <p class="label" id="range-label">Last 30 days</p>
+          <h1>Site stats</h1>
+        </div>
+        <div class="mode" role="group" aria-label="Time range">
+          <button type="button" data-days="7" aria-pressed="false">7 days</button>
+          <button type="button" data-days="30" aria-pressed="true">30 days</button>
+          <button type="button" data-days="90" aria-pressed="false">90 days</button>
+        </div>
+      </div>
+
+      <p class="form-error" id="dash-error" role="alert"></p>
+
+      <ul class="tiles-row">
+        <li><span class="label">Visitors</span><b id="t-visitors">–</b><small>Counted once per day</small></li>
+        <li><span class="label">Page views</span><b id="t-views">–</b><small>All pages on this site</small></li>
+        <li><span class="label">Download taps</span><b id="t-downloads">–</b><small>Taps on Download APK</small></li>
+        <li><span class="label">APK downloads</span><b id="t-github">–</b><small>All time, from GitHub</small></li>
+      </ul>
+
+      <div class="panel chart-panel">
+        <div class="panel-head">
+          <h2 id="chart-title">Visitors per day</h2>
+          <div class="mode" role="group" aria-label="Chart measure">
+            <button type="button" data-metric="visitors" aria-pressed="true">Visitors</button>
+            <button type="button" data-metric="views" aria-pressed="false">Views</button>
+            <button type="button" data-metric="downloads" aria-pressed="false">Downloads</button>
+          </div>
+        </div>
+        <div class="chart" id="chart"></div>
+        <div class="tip" id="tip" hidden></div>
+        <details class="table-view">
+          <summary>Show as a table</summary>
+          <table id="daily-table"><thead><tr><th>Day</th><th>Visitors</th><th>Views</th><th>Download taps</th></tr></thead><tbody></tbody></table>
+        </details>
+      </div>
+
+      <div class="grid">
+        <div class="panel"><h2>Pages</h2><ol class="bars" id="l-pages"></ol></div>
+        <div class="panel"><h2>Came from</h2><ol class="bars" id="l-referrers"></ol></div>
+        <div class="panel"><h2>Countries</h2><ol class="bars" id="l-countries"></ol></div>
+        <div class="panel"><h2>Devices</h2><ol class="bars" id="l-devices"></ol></div>
+        <div class="panel"><h2>Browsers</h2><ol class="bars" id="l-browsers"></ol></div>
+        <div class="panel">
+          <h2>APK downloads by build</h2>
+          <table class="builds" id="builds"><thead><tr><th>Build</th><th>Released</th><th>Downloads</th></tr></thead><tbody></tbody></table>
+        </div>
+      </div>
+
+      <p class="note-line">Views and download taps are counted by this site from the day this page went live. Older visits are in <a href="https://vercel.com/dashboard" rel="noopener">Vercel Analytics</a>. GitHub counts every APK download, including ones from links shared outside the site.</p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="stats.js" defer></script>
+</body>
+</html>
