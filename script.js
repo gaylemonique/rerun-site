@@ -163,6 +163,29 @@
     })
   })
 
+  // hide the floating buttons while they would sit on top of the hero text (small screens, top of the page)
+  const heroText = document.querySelectorAll(".hero .actions, .hero .price, .hero .meta")
+  let floatingHoldUntil = 0
+  const overlaps = (a, b) => a.left < b.right + 8 && a.right + 8 > b.left && a.top < b.bottom + 8 && a.bottom + 8 > b.top
+  const checkFloating = () => {
+    const wn = document.getElementById("whats-new")
+    const panelOpen = wn?.querySelector(".wn-toggle")?.getAttribute("aria-expanded") === "true"
+    const buttons = [document.getElementById("bmc-wbtn"), wn?.querySelector(".wn-toggle")].filter(Boolean)
+    const clash = Date.now() >= floatingHoldUntil && !panelOpen && buttons.some((btn) => {
+      const r = btn.getBoundingClientRect()
+      return [...heroText].some((el) => overlaps(r, el.getBoundingClientRect()))
+    })
+    document.documentElement.classList.toggle("floating-clear", clash)
+  }
+  let floatingFrame
+  const queueFloating = () => { cancelAnimationFrame(floatingFrame); floatingFrame = requestAnimationFrame(checkFloating) }
+  window.addEventListener("scroll", queueFloating, { passive: true })
+  window.addEventListener("resize", queueFloating)
+  window.addEventListener("load", queueFloating)
+  // the coffee widget script loads on its own, so check again once it has had time to appear
+  setTimeout(queueFloating, 1500)
+  setTimeout(queueFloating, 4000)
+
   // the Buy Me a Coffee message bubble only shows after an APK download tap
   const supportMessage = "Thank you for trying my app! Help me earn for my Google Play Developer account, if you can. <3"
   let bubbleTimer
@@ -170,6 +193,10 @@
     a.addEventListener("click", () => {
       const bubble = document.getElementById("bmc-wbtn")?.nextElementSibling
       if (!bubble) return
+      // let the coffee button show with its message, then hide it again if it covers the text
+      floatingHoldUntil = Date.now() + 6000
+      checkFloating()
+      setTimeout(checkFloating, 6300)
       bubble.innerText = supportMessage
       bubble.style.transformOrigin = "right bottom"
       bubble.style.transition = ".25s ease all"

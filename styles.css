@@ -666,3 +666,7 @@ footer .fine { display: block; margin-top: 4px; font-size: 0.8125rem; }
 }
 /* keep the footer links clear of the floating buttons */
 footer { padding-bottom: 88px; }
+
+/* floating buttons step aside while they would cover the hero text (set in script.js) */
+#bmc-wbtn, .whats-new { transition: opacity 0.2s ease, visibility 0.2s ease; }
+.floating-clear #bmc-wbtn, .floating-clear .whats-new { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
