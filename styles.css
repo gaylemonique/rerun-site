@@ -102,6 +102,7 @@ section { padding-top: 56px; padding-bottom: 56px; }
 .price { margin: 12px 0 0; font-size: 0.875rem; color: var(--muted); }
 .price b { font-weight: 500; color: var(--ink); }
 .meta { margin-top: 4px; font-size: 0.875rem; color: var(--muted); }
+.meta + .meta { margin-top: 8px; }
 
 .carousel { margin-top: 8px; }
 .screens-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
