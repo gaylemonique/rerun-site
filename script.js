@@ -166,14 +166,20 @@
   // hide the floating buttons while they would sit on top of the hero text (small screens, top of the page)
   const heroText = document.querySelectorAll(".hero .actions, .hero .price, .hero .meta")
   let floatingHoldUntil = 0
-  const overlaps = (a, b) => a.left < b.right + 8 && a.right + 8 > b.left && a.top < b.bottom + 8 && a.bottom + 8 > b.top
+  const overlaps = (a, b) => a.left < b.right && a.right > b.left && a.top < b.bottom + 6 && a.bottom + 6 > b.top
+  // the lines of text and the buttons themselves, not the full-width boxes around them
+  const lineRects = (el) => {
+    const range = document.createRange()
+    range.selectNodeContents(el)
+    return [...range.getClientRects()]
+  }
   const checkFloating = () => {
     const wn = document.getElementById("whats-new")
     const panelOpen = wn?.querySelector(".wn-toggle")?.getAttribute("aria-expanded") === "true"
     const buttons = [document.getElementById("bmc-wbtn"), wn?.querySelector(".wn-toggle")].filter(Boolean)
     const clash = Date.now() >= floatingHoldUntil && !panelOpen && buttons.some((btn) => {
       const r = btn.getBoundingClientRect()
-      return [...heroText].some((el) => overlaps(r, el.getBoundingClientRect()))
+      return [...heroText].some((el) => lineRects(el).some((line) => overlaps(r, line)))
     })
     document.documentElement.classList.toggle("floating-clear", clash)
   }
