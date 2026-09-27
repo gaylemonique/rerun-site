@@ -173,14 +173,18 @@
     range.selectNodeContents(el)
     return [...range.getClientRects()]
   }
-  // where the two buttons sit (see .whats-new in styles.css and the widget's 18px margins),
-  // so the check works before the coffee widget has loaded and before What's new appears
+  // where the two buttons sit: their real boxes once they're on the page, and until then
+  // the spots they will take (see .whats-new in styles.css and the widget's 18px margins)
   const floatingZones = () => {
     const w = window.innerWidth
     const h = window.innerHeight
+    const box = (el, fallback) => {
+      const r = el?.getBoundingClientRect()
+      return r && r.width > 0 ? r : fallback
+    }
     return [
-      { left: 16, right: 170, top: h - 66, bottom: h - 18 },
-      { left: w - 82, right: w - 18, top: h - 82, bottom: h - 18 },
+      box(document.querySelector("#whats-new .wn-toggle"), { left: 16, right: 152, top: h - 66, bottom: h - 18 }),
+      box(document.getElementById("bmc-wbtn"), { left: w - 82, right: w - 18, top: h - 82, bottom: h - 18 }),
     ]
   }
   const checkFloating = () => {
