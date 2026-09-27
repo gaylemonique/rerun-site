@@ -185,6 +185,54 @@
     })
   })
 
+  // floating What's new: shows only the newest changelog entry, with a dot until it's opened
+  const whatsNew = document.getElementById("whats-new")
+  if (whatsNew && "fetch" in window) {
+    const toggle = whatsNew.querySelector(".wn-toggle")
+    const panel = document.getElementById("wn-panel")
+    whatsNew.hidden = true
+    fetch("changelog.html")
+      .then((r) => (r.ok ? r.text() : ""))
+      .then((html) => {
+        const doc = new DOMParser().parseFromString(html, "text/html")
+        const first = doc.querySelector(".log > li")
+        if (!first) return
+        const title = first.querySelector("h2")?.textContent.trim() || ""
+        const date = first.querySelector(".log-head .label")?.textContent.trim() || ""
+        const list = document.getElementById("wn-list")
+        document.getElementById("wn-title").textContent = title
+        document.getElementById("wn-date").textContent = date
+        first.querySelectorAll(":scope > ul > li").forEach((item) => {
+          const li = document.createElement("li")
+          li.textContent = item.textContent.trim()
+          list.appendChild(li)
+        })
+        whatsNew.hidden = false
+
+        const key = title + " · " + date
+        let seen = null
+        try { seen = localStorage.getItem("rerun-seen-change") } catch (e) {}
+        if (seen !== key) whatsNew.classList.add("unseen")
+
+        const setOpen = (open) => {
+          panel.hidden = !open
+          toggle.setAttribute("aria-expanded", String(open))
+          if (open) {
+            whatsNew.classList.remove("unseen")
+            try { localStorage.setItem("rerun-seen-change", key) } catch (e) {}
+          }
+        }
+        toggle.addEventListener("click", () => setOpen(panel.hidden))
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && !panel.hidden) { setOpen(false); toggle.focus() }
+        })
+        document.addEventListener("click", (e) => {
+          if (!panel.hidden && !whatsNew.contains(e.target)) setOpen(false)
+        })
+      })
+      .catch(() => {})
+  }
+
   // dark / light screenshots: each img carries a data-light source
   const modeButtons = [...document.querySelectorAll(".mode button")]
   const shotImgs = [...document.querySelectorAll(".shots img")]

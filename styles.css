@@ -597,3 +597,71 @@ footer .fine { display: block; margin-top: 4px; font-size: 0.8125rem; }
 @media (max-width: 767px) and (max-height: 720px) {
   .steps li { padding: 10px 0; }
 }
+
+/* floating What's new button and panel, bottom left (the coffee widget sits bottom right) */
+.whats-new {
+  position: fixed;
+  left: 16px;
+  bottom: 18px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: calc(100vw - 32px);
+}
+.whats-new[hidden] { display: none; }
+.wn-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 18px 0 16px;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--ink);
+  color: var(--bg);
+  font: inherit;
+  cursor: pointer;
+  box-shadow: 0 10px 24px -10px rgba(59, 44, 48, 0.55);
+  transition: transform 0.2s var(--ease), background-color 0.2s ease;
+  animation: whats-new-in 0.5s var(--ease) 0.6s both;
+}
+.wn-toggle .label { margin: 0; color: var(--card); }
+.wn-toggle .arrow { display: inline-block; transition: transform 0.25s var(--ease); }
+.wn-toggle[aria-expanded="true"] .arrow { transform: rotate(180deg); }
+.wn-toggle:hover { background: var(--chrome); transform: translateY(-2px); }
+.wn-toggle:focus-visible { outline: 2px solid var(--olive-deep); outline-offset: 3px; }
+.new-dot { display: none; width: 8px; height: 8px; flex: none; border-radius: 50%; background: var(--rose-tile); }
+.whats-new.unseen .new-dot { display: block; animation: new-dot 1.8s ease-in-out infinite; }
+
+.wn-panel {
+  width: min(360px, calc(100vw - 32px));
+  max-height: min(60vh, 460px);
+  overflow-y: auto;
+  padding: 20px 20px 18px;
+  border-radius: 20px;
+  background: var(--bg);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--rule), 0 18px 40px -16px rgba(59, 44, 48, 0.45);
+  transform-origin: left bottom;
+  animation: wn-open 0.25s var(--ease);
+}
+.wn-panel[hidden] { display: none; }
+.wn-panel .label { margin-bottom: 6px; }
+.wn-panel h2 { font-size: 1.5rem; }
+.wn-panel ul { margin: 12px 0 16px; padding-left: 18px; font-size: 0.9375rem; line-height: 1.5; }
+.wn-panel li + li { margin-top: 8px; }
+.wn-all { display: flex; justify-content: center; width: 100%; }
+.wn-all:hover .arrow { transform: translateX(4px); }
+
+@keyframes whats-new-in { from { opacity: 0; transform: translateY(12px); } }
+@keyframes wn-open { from { opacity: 0; transform: translateY(8px) scale(0.97); } }
+@keyframes new-dot { 50% { box-shadow: 0 0 0 5px rgba(206, 143, 158, 0.25); } }
+@media (min-width: 768px) { .whats-new { left: 18px; } }
+@media (prefers-reduced-motion: reduce) {
+  .wn-toggle, .wn-toggle .arrow, .wn-panel, .whats-new.unseen .new-dot { animation: none; transition: none; }
+  .wn-toggle:hover { transform: none; }
+}
+/* keep the footer links clear of the floating buttons */
+footer { padding-bottom: 88px; }
