@@ -163,6 +163,28 @@
     })
   })
 
+  // the Buy Me a Coffee message bubble only shows after an APK download tap
+  const supportMessage = "Thank you for trying my app! Help me earn for my Google Play Developer account, if you can. <3"
+  let bubbleTimer
+  document.querySelectorAll('a[href$="Rerun.apk"]').forEach((a) => {
+    a.addEventListener("click", () => {
+      const bubble = document.getElementById("bmc-wbtn")?.nextElementSibling
+      if (!bubble) return
+      bubble.innerText = supportMessage
+      bubble.style.transformOrigin = "right bottom"
+      bubble.style.transition = ".25s ease all"
+      bubble.style.opacity = "1"
+      bubble.style.visibility = "visible"
+      bubble.style.transform = "scale(1)"
+      clearTimeout(bubbleTimer)
+      bubbleTimer = setTimeout(() => {
+        bubble.style.opacity = "0"
+        bubble.style.visibility = "hidden"
+        bubble.style.transform = "scale(0.7)"
+      }, 6000)
+    })
+  })
+
   // dark / light screenshots: each img carries a data-light source
   const modeButtons = [...document.querySelectorAll(".mode button")]
   const shotImgs = [...document.querySelectorAll(".shots img")]
