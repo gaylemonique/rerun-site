@@ -189,7 +189,9 @@
   }
   const checkFloating = () => {
     const panelOpen = document.querySelector("#whats-new .wn-toggle")?.getAttribute("aria-expanded") === "true"
-    const lines = [...heroText].flatMap(lineRects)
+    // the hero stays put while the next section slides over it, so skip text that's already covered
+    const coveredFrom = document.querySelector(".hero")?.nextElementSibling?.getBoundingClientRect().top ?? Infinity
+    const lines = [...heroText].flatMap(lineRects).filter((line) => line.top < coveredFrom)
     const clash = Date.now() >= floatingHoldUntil && !panelOpen &&
       floatingZones().some((zone) => lines.some((line) => overlaps(zone, line)))
     document.documentElement.classList.toggle("floating-clear", clash)
