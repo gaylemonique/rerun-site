@@ -173,24 +173,30 @@
     range.selectNodeContents(el)
     return [...range.getClientRects()]
   }
+  // where the two buttons sit (see .whats-new in styles.css and the widget's 18px margins),
+  // so the check works before the coffee widget has loaded and before What's new appears
+  const floatingZones = () => {
+    const w = window.innerWidth
+    const h = window.innerHeight
+    return [
+      { left: 16, right: 170, top: h - 66, bottom: h - 18 },
+      { left: w - 82, right: w - 18, top: h - 82, bottom: h - 18 },
+    ]
+  }
   const checkFloating = () => {
-    const wn = document.getElementById("whats-new")
-    const panelOpen = wn?.querySelector(".wn-toggle")?.getAttribute("aria-expanded") === "true"
-    const buttons = [document.getElementById("bmc-wbtn"), wn?.querySelector(".wn-toggle")].filter(Boolean)
-    const clash = Date.now() >= floatingHoldUntil && !panelOpen && buttons.some((btn) => {
-      const r = btn.getBoundingClientRect()
-      return [...heroText].some((el) => lineRects(el).some((line) => overlaps(r, line)))
-    })
+    const panelOpen = document.querySelector("#whats-new .wn-toggle")?.getAttribute("aria-expanded") === "true"
+    const lines = [...heroText].flatMap(lineRects)
+    const clash = Date.now() >= floatingHoldUntil && !panelOpen &&
+      floatingZones().some((zone) => lines.some((line) => overlaps(zone, line)))
     document.documentElement.classList.toggle("floating-clear", clash)
   }
   let floatingFrame
   const queueFloating = () => { cancelAnimationFrame(floatingFrame); floatingFrame = requestAnimationFrame(checkFloating) }
+  checkFloating()
   window.addEventListener("scroll", queueFloating, { passive: true })
   window.addEventListener("resize", queueFloating)
-  window.addEventListener("load", queueFloating)
-  // the coffee widget script loads on its own, so check again once it has had time to appear
-  setTimeout(queueFloating, 1500)
-  setTimeout(queueFloating, 4000)
+  // the hero text slides up into place on load, so check again once it settles
+  document.querySelector(".hero")?.addEventListener("animationend", queueFloating)
 
   // the Buy Me a Coffee message bubble only shows after an APK download tap
   const supportMessage = "Thank you for trying my app! Help me earn for my Google Play Developer account, if you can. <3"
